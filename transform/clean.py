@@ -6,16 +6,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 def coalesce_timestamp(df: DataFrame, output_col: str, yellow_cab_col: str, green_cab_col: str) -> DataFrame:
-    """_summary_
+    """Função que agrega as entradas de timestamp que estão em duas colunas diferentes
+     em uma coluna nova e remove as duas colunas redundates originais
 
     Args:
-        df (DataFrame): _description_
-        output_col (str): _description_
-        yellow_cab_col (str): _description_
-        green_cab_col (str): _description_
+        df (DataFrame): DataFrame Spark alvo
+        output_col (str): Nome da nova coluna agregadora
+        yellow_cab_col (str): Nome da coluna que possue as entradas de timestamp vindo dos dados de taxis amarelos
+        green_cab_col (str): Nome da coluna que possue as entradas de timestamp vindo dos dados de taxis verdes
 
     Returns:
-        DataFrame: _description_
+        DataFrame: Novo DataFrame com a nova coluna e sem as duas colunas redundantes
     """
     return df.withColumn(
         output_col, 
@@ -23,14 +24,15 @@ def coalesce_timestamp(df: DataFrame, output_col: str, yellow_cab_col: str, gree
     ).drop(yellow_cab_col, green_cab_col)
 
 def replace_value_with_null(df: DataFrame, column: str, invalid_value: int) -> DataFrame:
-    """_summary_
+    """Função que substitui as entradas de um valor indesejado para Null em uma coluna desejada
 
     Args:
-        df (DataFrame): _description_
-        column (str): _description_
+        df (DataFrame): DataFrame Spark alvo
+        column (str): Coluna alvo
+        invalid_value (int): Valor indesejado
 
     Returns:
-        DataFrame: _description_
+        DataFrame: Novo DataFrame Spark com a substituição realizada
     """
     
     return df.withColumn(
@@ -40,15 +42,15 @@ def replace_value_with_null(df: DataFrame, column: str, invalid_value: int) -> D
     ) 
 
 def replace_null_with_value(df: DataFrame, column: str, correct_value: int | float) -> DataFrame:
-    """_summary_
+    """Função que substitui as entradas Null para um valo desejado em uma coluna desejada
 
     Args:
-        df (DataFrame): _description_
-        column (str): _description_
-        correct_value (int): _description_
+        df (DataFrame): DataFrame Spark alvo
+        column (str): Coluna alvo
+        correct_value (int | float): Valor desejado
 
     Returns:
-        DataFrame: _description_
+        DataFrame: Novo DataFrame Spark com a substituição realizada
     """
     
     return df.withColumn(
@@ -59,13 +61,17 @@ def replace_null_with_value(df: DataFrame, column: str, correct_value: int | flo
 
 
 def final_clean(df: DataFrame) -> DataFrame:
-    """_summary_
+    """Limpa o DataFrame Spark desejado realizando as seguintes ações na ordem:
+       1- Agregas as colunas de pickup_time e dropoff_time dos taxis amarelos e verdes em duas colunas: pickup_time e dropoff_time
+       2- Substitui as entradas desconhecidas das colunas 'payment_type' e 'RatecodeID' para Null
+       3- Substitui as entradas Null das colunas 'Airport_fee' e 'congestion_surcharge' para 0.0
+       4- Remove as colunas 'ehail_fee' e 'trip_type'
 
     Args:
-        df (DataFrame): _description_
+        df (DataFrame): DataFrame Spark alvo
 
     Returns:
-        DataFrame: _description_
+        DataFrame: Novo DataFrame Spark limpo
     """
 
     time_clean_df = coalesce_timestamp(df, "pickup_datetime", "tpep_pickup_datetime", "lpep_pickup_datetime")
@@ -74,15 +80,9 @@ def final_clean(df: DataFrame) -> DataFrame:
     clean_df = replace_value_with_null(time_clean_df, "payment_type", 5)
     clean_df = replace_value_with_null(clean_df, "RatecodeID", 99)
 
-    clean_df = clean_df.drop("ehail_fee", "trip_type")
-
-    clean_df = clean_df.withColumn(
-        "Airport_fee",
-        when(col("Airport_fee").isNull(), 0.0)
-        .otherwise(col("Airport_fee"))
-    )
-    
     clean_df = replace_null_with_value("Airport_fee", 0.0)
     clean_df = replace_null_with_value("congestion_surcharge", 0.0)
+
+    clean_df = clean_df.drop("ehail_fee", "trip_type")
 
     return clean_df
