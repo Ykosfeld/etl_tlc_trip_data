@@ -4,6 +4,8 @@ import sys, os, traceback
 from datetime import datetime
 
 from extract.taxi_extract import extract_all_taxi_data
+from transform.clean import final_clean
+from transform.enrich import enrich_trips
 from utils.logging import setup_logging
 from utils.spark import create_spark_session
 
@@ -26,7 +28,8 @@ def run():
 
         # Transformação
         clean_df = final_clean(raw_df)
-        
+        enriched_df = enrich_trips(clean_df)
+
         # Carregar
 
     finally:
