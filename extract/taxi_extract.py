@@ -1,55 +1,10 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.types import *
 import logging
+from config.schemas import yellow_taxi_schema, green_taxi_schema
 
 logger = logging.getLogger(__name__)
 
-yellow_taxi_schema = StructType([
-    StructField("VendorID", IntegerType(), True),
-    StructField("tpep_pickup_datetime", TimestampType(), True),
-    StructField("tpep_dropoff_datetime", TimestampType(), True),
-    StructField("passenger_count", IntegerType(), True),
-    StructField("trip_distance", DoubleType(), True),
-    StructField("RatecodeID", IntegerType(), True),
-    StructField("store_and_fwd_flag", StringType(), True),
-    StructField("PULocationID", IntegerType(), True),
-    StructField("DOLocationID", IntegerType(), True),
-    StructField("payment_type", IntegerType(), True),
-    StructField("fare_amount", DoubleType(), True),
-    StructField("extra", DoubleType(), True),
-    StructField("mta_tax", DoubleType(), True),
-    StructField("tip_amount", DoubleType(), True),
-    StructField("tolls_amount", DoubleType(), True),
-    StructField("improvement_surcharge", DoubleType(), True),
-    StructField("total_amount", DoubleType(), True),
-    StructField("congestion_surcharge", DoubleType(), True),
-    StructField("Airport_fee", DoubleType(), True),
-    StructField("cbd_congestion_fee", DoubleType(), True),
-])
-
-green_taxi_schema = StructType([
-    StructField("VendorID", IntegerType(), True),
-    StructField("lpep_pickup_datetime", TimestampType(), True),
-    StructField("lpep_dropoff_datetime", TimestampType(), True),
-    StructField("store_and_fwd_flag", StringType(), True),
-    StructField("RatecodeID", IntegerType(), True),
-    StructField("PULocationID", IntegerType(), True),
-    StructField("DOLocationID", IntegerType(), True),
-    StructField("passenger_count", IntegerType(), True),
-    StructField("trip_distance", DoubleType(), True),
-    StructField("fare_amount", DoubleType(), True),
-    StructField("extra", DoubleType(), True),
-    StructField("mta_tax", DoubleType(), True),
-    StructField("tip_amount", DoubleType(), True),
-    StructField("tolls_amount", DoubleType(), True),
-    StructField("ehail_fee", DoubleType(), True),
-    StructField("improvement_surcharge", DoubleType(), True),
-    StructField("total_amount", DoubleType(), True),
-    StructField("payment_type", IntegerType(), True),
-    StructField("trip_type", IntegerType(), True),
-    StructField("congestion_surcharge", DoubleType(), True),
-    StructField("cbd_congestion_fee", DoubleType(), True),
-])
 
 def extract_taxi_data(spark: SparkSession, path: str, schema: StructType) -> DataFrame:
     """Cria um DataFrame Spark com schema explícito para dados de corridas de taxi.

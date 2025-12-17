@@ -24,6 +24,11 @@ def run():
         raw_df = extract_all_taxi_data(spark)
         logger.info(f"Extraido {raw_df.count()} entradas cruas")
 
+        # Transformação
+        clean_df = final_clean(raw_df)
+        
+        # Carregar
+
     finally:
         spark.stop()
         logger.info("Sessão do Spark encerrada")
