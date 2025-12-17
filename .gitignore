@@ -1,3 +1,6 @@
 data/yellow_tripdata_2025-10.parquet
 data/green_tripdata_2025-10.parquet
 data/fhvhv_tripdata_2025-10.parquet
+TODO
+tests/Test.ipynb
+tests/.ipynb_checkpoints
