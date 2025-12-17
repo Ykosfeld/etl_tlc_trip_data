@@ -5,17 +5,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-""" TODO
-1- adicionar coluna de data da corrida
-2- adicionar coluna com duração da corrida X
-3- adicionar coluna com total de impostos pago X
-4- coluna de turno X
-5- coluna dia da semana X
-
-Agragar mudanças 
-
-"""
-
 def add_total_trip_duration(df: DataFrame, pickup_col: str, dropoff_col: str) -> DataFrame:
     """Adciona a duração total em segunda de cada corrida
      em uma coluna nova ao DataFrame Spark alvo 
