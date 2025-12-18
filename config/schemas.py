@@ -48,13 +48,6 @@ green_taxi_schema = StructType([
     StructField("cbd_congestion_fee", DoubleType(), True),
 ])
 
-metadata_schema = StructType([
-        StructField("execution_date", StringType(), False),
-        StructField("spark_version", StringType(), False),
-        StructField("row_count", IntegerType(), False),
-        StructField("partition_columns", ArrayType(StringType()), True),
-])
-
 VENDOR_ID = "VendorID"
 TPEP_PICKUP_DATETIME = "tpep_pickup_datetime"
 TPEP_DROPOFF_DATETIME = "tpep_dropoff_datetime"

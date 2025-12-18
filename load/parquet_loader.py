@@ -6,9 +6,6 @@ import logging
 import json
 from pathlib import Path
 import datetime
-import pandas as pd
-
-from config.schemas import metadata_schema
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +23,13 @@ def write_metadata(
         "partition_columns": partition_cols or []
     }   
 
-    metadata_dir = Path(output_path).resolve() / "_metadata"
+    metadata_dir = Path(output_path).resolve()
     metadata_dir.mkdir(parents=True, exist_ok=True)
 
     file_path = metadata_dir / f"run_{execution_date}.json"
-
-    metadata_pandas = pd.DataFrame(metadata)
     
-    spark.createDataFrame(metadata_pandas, schema=metadata_schema) \
-    .write.mode("overwrite") \
-    .json(f"{output_path}/_metadata")
+    with open(file_path, "w") as f:
+        json.dump(metadata, f, indent=2)
 
     logger.warning(f"[METADATA] Criado em: {file_path.resolve()}")
 

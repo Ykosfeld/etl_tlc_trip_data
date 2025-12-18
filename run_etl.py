@@ -34,7 +34,7 @@ def run():
 
         # Carregar
         output_path = "data/gold"
-        write_metadata(output_path, spark, gold_df.count(), None)
+        write_metadata("data/metadata", spark, gold_df.count(), None)
         write_parquet(gold_df, output_path, None, "overwrite")
 
         runtime = (datetime.now() - start_time).total_seconds()
