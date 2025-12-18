@@ -1,6 +1,6 @@
 # ETL PySpark – TLC Taxi Trip Data
 
-Este projeto implementa uma **pipeline de ETL distribuída em PySpark**, seguindo boas práticas de engenharia de dados e organização em camadas **Bronze / Silver / Gold**.  
+Este projeto implementa uma **pipeline de ETL distribuída em PySpark**, seguindo boas práticas de engenharia de dados e organização em camadas **Bronze / Silver / Gold**. 
 
 ---
 
@@ -28,3 +28,12 @@ etl_pyspark/
 ├── tests/          # Testes unitários (opcional)
 ├── README.md
 └── run_etl.py      # Job principal da pipeline
+```
+
+---
+
+## 🛠️ TODO / Pontos de Otimização
+
+- Estudo de impacto do particionamento e do número de partições
+  no tempo de execução da pipeline e no desempenho de leitura
+  dos datasets Gold, considerando diferentes volumes de dados.
