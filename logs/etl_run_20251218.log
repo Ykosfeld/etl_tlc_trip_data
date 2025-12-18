@@ -1875,3 +1875,19 @@ StructType([StructField('VendorID', LongType(), True), StructField('passenger_co
 2025-12-18 15:40:14,712 - INFO - A pipeline foi completada com sucesso em 12.41 segunds
 2025-12-18 15:40:14,928 - INFO - Sessão do Spark encerrada
 2025-12-18 15:40:14,929 - INFO - Closing down clientserver connection
+2025-12-18 15:47:36,108 - INFO - Starting Taxi ETL Pipeline
+2025-12-18 15:47:36,242 - INFO - NumExpr defaulting to 12 threads.
+2025-12-18 15:47:38,960 - INFO - Sessão do Spark criada
+2025-12-18 15:47:38,960 - INFO - Lendo dados de taxis de data/yellow_tripdata_2025-10.parquet
+2025-12-18 15:47:41,578 - INFO - Total de corridas carregadas: 4428699
+2025-12-18 15:47:41,578 - INFO - Lendo dados de taxis de data/green_tripdata_2025-10.parquet
+2025-12-18 15:47:41,771 - INFO - Total de corridas carregadas: 49416
+2025-12-18 15:47:42,063 - INFO - O DataFrame combinado contém 4478115 corridas
+2025-12-18 15:47:42,280 - INFO - Extraido 4478115 entradas cruas
+2025-12-18 15:47:43,055 - INFO - 4478115 entradas limpas e enriquecidas
+2025-12-18 15:47:43,473 - INFO - Serão gravados 4478115 linhas
+2025-12-18 15:47:43,481 - INFO - O DataFrame será gravado com o seguinte esquema: 
+StructType([StructField('VendorID', LongType(), True), StructField('passenger_count', LongType(), True), StructField('trip_distance', DoubleType(), True), StructField('RatecodeID', LongType(), True), StructField('store_and_fwd_flag', StringType(), True), StructField('PULocationID', LongType(), True), StructField('DOLocationID', LongType(), True), StructField('payment_type', LongType(), True), StructField('fare_amount', DoubleType(), True), StructField('extra', DoubleType(), True), StructField('mta_tax', DoubleType(), True), StructField('tip_amount', DoubleType(), True), StructField('tolls_amount', DoubleType(), True), StructField('improvement_surcharge', DoubleType(), True), StructField('total_amount', DoubleType(), True), StructField('congestion_surcharge', DoubleType(), True), StructField('Airport_fee', DoubleType(), True), StructField('cbd_congestion_fee', DoubleType(), True), StructField('pickup_datetime', TimestampType(), True), StructField('dropoff_datetime', TimestampType(), True), StructField('trip_duration', LongType(), True), StructField('total_taxes', DoubleType(), True), StructField('hour_bucket', IntegerType(), True), StructField('weekday_num', IntegerType(), True)])
+2025-12-18 15:47:49,363 - INFO - A pipeline foi completada com sucesso em 13.25 segunds
+2025-12-18 15:47:49,430 - INFO - Sessão do Spark encerrada
+2025-12-18 15:47:49,430 - INFO - Closing down clientserver connection

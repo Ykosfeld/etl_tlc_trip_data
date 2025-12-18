@@ -4,40 +4,42 @@ from pyspark.sql.functions import *
 import logging
 
 import json
-from datetime import datetime
 from pathlib import Path
+import datetime
+import pandas as pd
+
+from config.schemas import metadata_schema
 
 logger = logging.getLogger(__name__)
 
 def write_metadata(
     output_path: str,
-    spark, 
-    row_count: int, 
-    partition_cols: list[str] = None
-):
-    """Cria um arquivo json de meta dados sobre a execução do job 
-    com as seguintes informações: dia de execução, versão do Spark, número de linhas salvas, colunas para criterio de particionamento
-
-    Args:
-        output_path (str): Caminho de onde salvar o arquivo de meta dados
-        spark (_type_): Sessão do Spark
-        row_count (int): Número de linhas do DataFrame Spark alvo
-        partition_cols (list[str], optional): Colunas que serão criterio de particionamento. Defaults to None.
-    """
+    spark,
+    row_count: int,
+    partition_cols: list[str] | None = None
+) -> str:
+    execution_date = datetime.datetime.now(datetime.UTC).strftime("%Y%m%d_%H%M%S")
     metadata = {
-        "execution_date": datetime.utcnow().isoformat(),
+        "execution_date": execution_date,
         "spark_version": spark.version,
         "row_count": row_count,
-        "partition_columns": partition_cols 
-    }
+        "partition_columns": partition_cols or []
+    }   
 
-    metadata_dir = Path(output_path) / "_metadata"
+    metadata_dir = Path(output_path).resolve() / "_metadata"
     metadata_dir.mkdir(parents=True, exist_ok=True)
 
-    file_path = metadata_dir / f"run_{metadata['execution_date']}.json"
+    file_path = metadata_dir / f"run_{execution_date}.json"
 
-    with open(file_path, "w") as f:
-        json.dump(metadata, f, indent=2)
+    metadata_pandas = pd.DataFrame(metadata)
+    
+    spark.createDataFrame(metadata_pandas, schema=metadata_schema) \
+    .write.mode("overwrite") \
+    .json(f"{output_path}/_metadata")
+
+    logger.warning(f"[METADATA] Criado em: {file_path.resolve()}")
+
+    return str(file_path)
 
 
 def write_parquet(

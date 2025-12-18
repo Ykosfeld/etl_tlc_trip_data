@@ -7,7 +7,7 @@ def setup_logging():
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(f'logs/etl_run_{datetime.now().strftime("%Y%m%d")}.log'),
+            logging.FileHandler(f'logs/etl_run_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log'),
             logging.StreamHandler(sys.stdout)
         ]
     )
