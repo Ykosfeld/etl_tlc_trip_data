@@ -50,11 +50,11 @@ def write_parquet(
 
     Args:
         df (DataFrame): DataFrame Spark alvo
-        output_path (str): Caminho de onde salvar o DataFrame Spark
+        output_path (str): Diretório onde o DataFrame será salvo em formato Parquet
         partition_cols (list[str], optional): Colunas que serão criterio de particionamento. Defaults to None.
         mode (str, optional): Parametro a ser utilizado na função '.mode' do DataFrame Spark. Defaults to "overwrite".
     """
-    
+
     logger.info(f"Serão gravados {df.count()} linhas")
     logger.info(f"O DataFrame será gravado com o seguinte esquema: \n{df.schema}")
     
