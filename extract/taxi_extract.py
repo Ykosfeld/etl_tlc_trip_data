@@ -40,8 +40,8 @@ def extract_all_taxi_data(spark: SparkSession) -> DataFrame:
         DataFrame: DataFrame resultante da união
     """
 
-    yellow_taxi_trips = extract_taxi_data(spark, "data/yellow_tripdata_2025-10.parquet", yellow_taxi_schema)
-    green_taxi_trips = extract_taxi_data(spark, "data/green_tripdata_2025-10.parquet", green_taxi_schema)
+    yellow_taxi_trips = extract_taxi_data(spark, "data/raw/yellow_tripdata_2025-10.parquet", yellow_taxi_schema)
+    green_taxi_trips = extract_taxi_data(spark, "data/raw/green_tripdata_2025-10.parquet", green_taxi_schema)
     
     all_taxi_trips = yellow_taxi_trips.unionByName(green_taxi_trips, allowMissingColumns=True)
 
