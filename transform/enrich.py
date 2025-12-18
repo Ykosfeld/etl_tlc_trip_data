@@ -97,7 +97,7 @@ def enrich_trips(df: DataFrame) -> DataFrame:
     """
 
     df = add_total_trip_duration(df, "pickup_datetime", "dropoff_datetime")
-    df = add_total_taxes(df, "fate_amount", "total_amount")
+    df = add_total_taxes(df, "fare_amount", "total_amount")
     df = add_hour_bucket(df, "pickup_datetime")
     df = add_weekday(df, "pickup_datetime")
     
