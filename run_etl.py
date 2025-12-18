@@ -12,7 +12,7 @@ from utils.spark import create_spark_session
 
 def run():
     os.makedirs("logs", exist_ok=True)
-    os.makedirs("data/processed/orders", exist_ok=True)
+    os.makedirs("data/gold", exist_ok=True)
 
     logger = setup_logging()
     logger.info("Starting Taxi ETL Pipeline")
@@ -30,11 +30,20 @@ def run():
         # Transformação
         silver_df = final_clean(bronze_df)
         gold_df = enrich_trips(silver_df)
+        logger.info(f"{gold_df.count()} entradas limpas e enriquecidas")
 
         # Carregar
-        write_metadata("data/gold", spark, gold_df.count(), None)
-        write_parquet(gold_df, "data/gold", None, "overwrite")
-        
+        output_path = "data/gold"
+        write_metadata(output_path, spark, gold_df.count(), None)
+        write_parquet(gold_df, output_path, None, "overwrite")
+
+        runtime = (datetime.now() - start_time).total_seconds()
+        logger.info(f"A pipeline foi completada com sucesso em {runtime:.2f} segunds")
+
+    except Exception as e:
+        logger.error(f"A pipeline falhou: {str(e)}")
+        logger.error(traceback.format_exc())
+    
     finally:
         spark.stop()
         logger.info("Sessão do Spark encerrada")
