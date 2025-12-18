@@ -47,3 +47,28 @@ green_taxi_schema = StructType([
     StructField("congestion_surcharge", DoubleType(), True),
     StructField("cbd_congestion_fee", DoubleType(), True),
 ])
+
+VENDOR_ID = "VendorID"
+TPEP_PICKUP_DATETIME = "tpep_pickup_datetime"
+TPEP_DROPOFF_DATETIME = "tpep_dropoff_datetime"
+LPEP_PICKUP_DATETIME = "lpep_pickup_datetime"
+LPEP_DROPOFF_DATETIME = "lpep_dropoff_datetime"
+PASSENGER_COUNT = "passenger_count"
+TRIP_DISTANCE = "trip_distance"
+RATECODE_ID = "RatecodeID"
+STORE_AND_FWD_FLAG = "store_and_fwd_flag"
+PULOCATION_ID = "PULocationID"
+DOLOCATION_ID = "DOLocationID"
+PAYMENT_TYPE = "payment_type"
+FARE_AMOUNT = "fare_amount"
+EXTRA = "extra"
+MTA_TAX = "mta_tax"
+TIP_AMOUNT = "tip_amount"
+TOLLS_AMOUNT = "tolls_amount"
+IMPROVEMENT_SURCHARGE = "improvement_surcharge"
+TOTAL_AMOUNT = "total_amount"
+CONGESTION_SURCHARGE = "congestion_surcharge"
+AIRPORT_FEE = "Airport_fee"
+CBD_CONGESTION_FEE = "cbd_congestion_fee"
+EHAIL_FEE = "ehail_fee"
+TRIP_TYPE = "trip_type"
