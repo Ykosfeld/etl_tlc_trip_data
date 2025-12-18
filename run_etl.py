@@ -6,6 +6,7 @@ from datetime import datetime
 from extract.taxi_extract import extract_all_taxi_data
 from transform.clean import final_clean
 from transform.enrich import enrich_trips
+from load.parquet_loader import write_metadata, write_parquet
 from utils.logging import setup_logging
 from utils.spark import create_spark_session
 
@@ -23,15 +24,17 @@ def run():
         logger.info("Sessão do Spark criada")
 
         # Extração
-        raw_df = extract_all_taxi_data(spark)
-        logger.info(f"Extraido {raw_df.count()} entradas cruas")
+        bronze_df = extract_all_taxi_data(spark)
+        logger.info(f"Extraido {bronze_df.count()} entradas cruas")
 
         # Transformação
-        clean_df = final_clean(raw_df)
-        enriched_df = enrich_trips(clean_df)
+        silver_df = final_clean(bronze_df)
+        gold_df = enrich_trips(silver_df)
 
         # Carregar
-
+        write_metadata("data/gold", spark, gold_df.count(), None)
+        write_parquet(gold_df, "data/gold", None, "overwrite")
+        
     finally:
         spark.stop()
         logger.info("Sessão do Spark encerrada")
