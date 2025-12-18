@@ -1,0 +1,19 @@
+2025-12-18 15:18:15,510 - INFO - Starting Taxi ETL Pipeline
+2025-12-18 15:18:20,000 - INFO - NumExpr defaulting to 12 threads.
+2025-12-18 15:18:30,875 - INFO - Sessão do Spark criada
+2025-12-18 15:18:30,876 - INFO - Lendo dados de taxis de data/yellow_tripdata_2025-10.parquet
+2025-12-18 15:18:34,769 - INFO - Total de corridas carregadas: 4428699
+2025-12-18 15:18:34,769 - INFO - Lendo dados de taxis de data/green_tripdata_2025-10.parquet
+2025-12-18 15:18:34,908 - INFO - Total de corridas carregadas: 49416
+2025-12-18 15:18:35,134 - INFO - O DataFrame combinado contém 4478115 corridas
+2025-12-18 15:18:35,307 - INFO - Extraido 4478115 entradas cruas
+2025-12-18 15:18:35,692 - ERROR - A pipeline falhou: replace_null_with_value() missing 1 required positional argument: 'correct_value'
+2025-12-18 15:18:35,692 - ERROR - Traceback (most recent call last):
+  File "/home/ykosfeld/Projetos/Meu_Python/LearningPyspark/etl_tlc_trip_data/run_etl.py", line 31, in run
+    silver_df = final_clean(bronze_df)
+  File "/home/ykosfeld/Projetos/Meu_Python/LearningPyspark/etl_tlc_trip_data/transform/clean.py", line 83, in final_clean
+    clean_df = replace_null_with_value("Airport_fee", 0.0)
+TypeError: replace_null_with_value() missing 1 required positional argument: 'correct_value'
+
+2025-12-18 15:18:35,815 - INFO - Sessão do Spark encerrada
+2025-12-18 15:18:35,816 - INFO - Closing down clientserver connection

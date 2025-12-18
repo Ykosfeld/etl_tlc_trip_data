@@ -80,8 +80,8 @@ def final_clean(df: DataFrame) -> DataFrame:
     clean_df = replace_value_with_null(time_clean_df, "payment_type", 5)
     clean_df = replace_value_with_null(clean_df, "RatecodeID", 99)
 
-    clean_df = replace_null_with_value("Airport_fee", 0.0)
-    clean_df = replace_null_with_value("congestion_surcharge", 0.0)
+    clean_df = replace_null_with_value(clean_df, "Airport_fee", 0.0)
+    clean_df = replace_null_with_value(clean_df, "congestion_surcharge", 0.0)
 
     clean_df = clean_df.drop("ehail_fee", "trip_type")
 
