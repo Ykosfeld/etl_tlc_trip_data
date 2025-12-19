@@ -32,6 +32,23 @@ etl_pyspark/
 
 ---
 
+## 🎲 Dados
+
+Os dados utilizados neste projeto são provenientes do **NYC Taxi & Limousine Commission (TLC)**,
+que disponibiliza publicamente informações sobre corridas de táxis na cidade de Nova York.
+
+- **Fonte oficial:**  
+  https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
+
+- **Datasets utilizados:**
+  - *Yellow Taxi Trip Records*
+  - *Green Taxi Trip Records*
+
+Os arquivos estão disponíveis no formato **Parquet** e podem ser baixados diretamente do site oficial
+para execução local da pipeline.
+
+---
+
 ## 🛠️ TODO / Pontos de Otimização
 
 - Estudo de impacto do particionamento e do número de partições
