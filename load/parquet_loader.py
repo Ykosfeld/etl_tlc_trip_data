@@ -15,6 +15,19 @@ def write_metadata(
     row_count: int,
     partition_cols: list[str] | None = None
 ) -> str:
+    """Salva informações da execução da pipeline em um arquivo json,
+    entre elas: data e hora da execução, versão do Spark, total de linhas no 
+    DataFrame e colunas utilizadas para criterio de particionamento
+
+    Args:
+        output_path (str): Diretório alvo de onde salvar o arquivo json
+        spark (_type_): Sessão do Spark
+        row_count (int): Quantas linhas possui o DataFrame Spark
+        partition_cols (list[str] | None, optional): Colunas que serão criterio de particionamento. Defaults to None.
+
+    Returns:
+        str: Caminho para o arquivo json com os metadados
+    """
     execution_date = datetime.datetime.now(datetime.UTC).strftime("%Y%m%d_%H%M%S")
     metadata = {
         "execution_date": execution_date,
