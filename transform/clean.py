@@ -7,7 +7,11 @@ import config.schemas as schemas
 
 logger = logging.getLogger(__name__)
 
-def replace_value_with_null(df: DataFrame, column: str, invalid_value: int) -> DataFrame:
+def replace_value_with_null(
+    df: DataFrame,
+    column: str,
+    invalid_value: int
+) -> DataFrame:
     """Função que substitui as entradas de um valor indesejado para Null em uma coluna desejada
 
     Args:
@@ -25,7 +29,11 @@ def replace_value_with_null(df: DataFrame, column: str, invalid_value: int) -> D
         .otherwise(col(column))
     ) 
 
-def replace_null_with_value(df: DataFrame, column: str, correct_value: int | float) -> DataFrame:
+def replace_null_with_value(
+    df: DataFrame,
+    column: str,
+    correct_value: int | float
+) -> DataFrame:
     """Função que substitui as entradas Null para um valo desejado em uma coluna desejada
 
     Args:

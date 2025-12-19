@@ -5,7 +5,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def add_total_trip_duration(df: DataFrame, pickup_col: str, dropoff_col: str) -> DataFrame:
+def add_total_trip_duration(
+    df: DataFrame,
+    pickup_col: str,
+    dropoff_col: str
+) -> DataFrame:
     """Adciona a duração total em segunda de cada corrida
      em uma coluna nova ao DataFrame Spark alvo 
 
@@ -22,7 +26,11 @@ def add_total_trip_duration(df: DataFrame, pickup_col: str, dropoff_col: str) ->
         expr(f"timestampdiff(SECOND, {pickup_col}, {dropoff_col})")
     )
 
-def add_total_taxes(df: DataFrame, fare_amount_col: str, total_amount_col: str) -> DataFrame:
+def add_total_taxes(
+    df: DataFrame,
+    fare_amount_col: str,
+    total_amount_col: str
+) -> DataFrame:
     """Adciona o total pago em taxas/impostos na corrida 
     em uma coluna nova ao DataFrame Spark alvo
 
@@ -39,7 +47,10 @@ def add_total_taxes(df: DataFrame, fare_amount_col: str, total_amount_col: str) 
         col(total_amount_col) - col(fare_amount_col)
     )
 
-def add_hour_bucket(df: DataFrame, timestamp_col: str) -> DataFrame:
+def add_hour_bucket(
+    df: DataFrame,
+    timestamp_col: str
+) -> DataFrame:
     """Separa os hórarios que a corrida começou em intervalos de tempo 
     em uma coluna nova ao DataFrame Spark alvo de acordo com a seguinte regra:
     0 - (0, 6)
@@ -65,7 +76,10 @@ def add_hour_bucket(df: DataFrame, timestamp_col: str) -> DataFrame:
         .when(h.between(19, 23), 3)
     )
 
-def add_weekday(df: DataFrame, timestamp_col: str) -> DataFrame:
+def add_weekday(
+    df: DataFrame,
+    timestamp_col: str
+) -> DataFrame:
     """Adciona em qual dia da semana a corrida aconteceu 
     em uma coluna nova ao DataFrame Spark alvo
 
@@ -82,7 +96,10 @@ def add_weekday(df: DataFrame, timestamp_col: str) -> DataFrame:
         dayofweek(col(timestamp_col))
     )
 
-def add_taxi_type(df: DataFrame, taxi_type: str) -> DataFrame:
+def add_taxi_type(
+    df: DataFrame,
+    taxi_type: str
+) -> DataFrame:
     mapping = {
         "yellow": 0,
         "green": 1
@@ -95,7 +112,10 @@ def add_taxi_type(df: DataFrame, taxi_type: str) -> DataFrame:
         lit(mapping[taxi_type])
     )
 
-def enrich_trips(df: DataFrame, taxi_type: str) -> DataFrame:
+def enrich_trips(
+    df: DataFrame,
+    taxi_type: str
+) -> DataFrame:
     """Enriquece o DataFrame Spark alvo seguindo a ordem:
     1- Nova coluna para duração da corrida
     2- Nova coluna para total de taxas/impostos pagos
