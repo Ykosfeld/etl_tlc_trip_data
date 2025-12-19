@@ -30,22 +30,3 @@ def extract_taxi_data(spark: SparkSession, path: str, schema: StructType) -> Dat
 
     return df
 
-def extract_all_taxi_data(spark: SparkSession) -> DataFrame:
-    """Cria um DataFrame Spark das corridas combinads de taxis amarelos e verdes.
-
-    Args:
-        spark (SparkSession): sessão do spark
-
-    Returns:
-        DataFrame: DataFrame resultante da união
-    """
-
-    yellow_taxi_trips = extract_taxi_data(spark, "data/raw/yellow_tripdata_2025-*.parquet", yellow_taxi_schema)
-    green_taxi_trips = extract_taxi_data(spark, "data/raw/green_tripdata_2025-*.parquet", green_taxi_schema)
-    
-    all_taxi_trips = yellow_taxi_trips.unionByName(green_taxi_trips, allowMissingColumns=True)
-
-    total_trips = all_taxi_trips.count()
-    logger.info(f"O DataFrame combinado contém {total_trips} corridas")
-
-    return all_taxi_trips
