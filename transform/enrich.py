@@ -100,6 +100,16 @@ def add_taxi_type(
     df: DataFrame,
     taxi_type: str
 ) -> DataFrame:
+    """Adciona coluna que indica com qual taxi a corrida ocorreu,
+    assumindo os valores 0 para taxi amarelo e 1 para taxi verde
+
+    Args:
+        df (DataFrame): DataFrame Spark alvo
+        taxi_type (str): Qual o tipo de taxi da origem do DataFrame
+
+    Returns:
+        DataFrame: DataFrame Spark com a coluna 'taxi_type' adicionada
+    """
     mapping = {
         "yellow": 0,
         "green": 1
