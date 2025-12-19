@@ -48,8 +48,8 @@ def run():
         spark.sparkContext.setJobDescription("Gold | Salvando corridas de taxi limpas e enriquecidas")
         
         output_path = "data/gold"
-        write_metadata("data/metadata", spark, gold_final_df.count(), None)
-        write_parquet(gold_final_df, output_path, None, "overwrite")
+        write_metadata("data/metadata", spark, gold_final_df.count(), ["taxi_type"])
+        write_parquet(gold_final_df, output_path, ["taxi_type"], "overwrite")
 
         runtime = (datetime.now() - start_time).total_seconds()
         logger.info(f"A pipeline foi completada com sucesso em {runtime:.2f} segunds")
