@@ -24,15 +24,18 @@ def run():
         logger.info("Sessão do Spark criada")
 
         # Extração
+        spark.sparkContext.setJobDescription("Bronze | Lendo corridas de taxi cruas")
         bronze_df = extract_all_taxi_data(spark)
         logger.info(f"Extraido {bronze_df.count()} entradas cruas")
 
         # Transformação
+        spark.sparkContext.setJobDescription("Silver | Limpando e enriquecendo corridas de taxi")
         silver_df = final_clean(bronze_df)
         gold_df = enrich_trips(silver_df)
         logger.info(f"{gold_df.count()} entradas limpas e enriquecidas")
 
         # Carregar
+        spark.sparkContext.setJobDescription("Gold | Salvando corridas de taxi limpas e enriquecidas")
         output_path = "data/gold"
         write_metadata("data/metadata", spark, gold_df.count(), None)
         write_parquet(gold_df, output_path, None, "overwrite")
