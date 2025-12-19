@@ -51,11 +51,22 @@ def replace_null_with_value(
         .otherwise(col(column))
     )
 
-def rename_timestamp_column(
+def rename_column(
     df: DataFrame, 
     possible_names: list[str], 
     final_name: str
 ) -> DataFrame:
+    """Renomeia a coluna de um DataFrame que pode assumir um dos nome dados na lista
+    'possible_names' para um nome fixo dado por 'final_name'    
+
+    Args:
+        df (DataFrame): DataFrame Spark alvo    
+        possible_names (list[str]): Lista com os nomes que a coluna alvo pode assumir
+        final_name (str): Nome que a coluna será renomeada
+
+    Returns:
+        DataFrame: DataFrame Spark com a coluna renomeada
+    """
     for col in possible_names:
         if col in df.columns:
             return df.withColumnRenamed(col, final_name)
@@ -75,8 +86,8 @@ def final_clean(df: DataFrame) -> DataFrame:
         DataFrame: Novo DataFrame Spark limpo
     """
     
-    clean_df = rename_timestamp_column(df, ["tpep_pickup_datetime", "lpep_pickup_datetime"], "pickup_datetime")
-    clean_df = rename_timestamp_column(clean_df, ["tpep_dropoff_datetime", "lpep_dropoff_datetime"], "dropoff_datetime")
+    clean_df = rename_column(df, ["tpep_pickup_datetime", "lpep_pickup_datetime"], "pickup_datetime")
+    clean_df = rename_column(clean_df, ["tpep_dropoff_datetime", "lpep_dropoff_datetime"], "dropoff_datetime")
 
     clean_df = replace_value_with_null(clean_df, "payment_type", 5)
     clean_df = replace_value_with_null(clean_df, "RatecodeID", 99)
