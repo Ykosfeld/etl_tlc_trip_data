@@ -67,7 +67,7 @@ def write_parquet(
     logger.info(f"Serão gravados {df.count()} linhas")
     logger.info(f"O DataFrame será gravado com o seguinte esquema: \n{df.schema}")
     
-    writer = df.write.mode(mode)
+    writer = df.coalesce(2).write.mode(mode)
 
     if partition_cols:
         writer = writer.partitionBy(*partition_cols)

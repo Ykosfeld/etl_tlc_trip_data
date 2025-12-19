@@ -82,7 +82,20 @@ def add_weekday(df: DataFrame, timestamp_col: str) -> DataFrame:
         dayofweek(col(timestamp_col))
     )
 
-def enrich_trips(df: DataFrame) -> DataFrame:
+def add_taxi_type(df: DataFrame, taxi_type: str) -> DataFrame:
+    mapping = {
+        "yellow": 0,
+        "green": 1
+    }
+    if taxi_type not in mapping:
+        logger.warning(f"Taxi type inválido: {taxi_type}")
+    
+    return df.withColumn(
+        "taxi_type",
+        lit(mapping[taxi_type])
+    )
+
+def enrich_trips(df: DataFrame, taxi_type: str) -> DataFrame:
     """Enriquece o DataFrame Spark alvo seguindo a ordem:
     1- Nova coluna para duração da corrida
     2- Nova coluna para total de taxas/impostos pagos
@@ -95,7 +108,7 @@ def enrich_trips(df: DataFrame) -> DataFrame:
     Returns:
         DataFrame: Novo DataFrame Spark enriquecido
     """
-
+    df = add_taxi_type(df, taxi_type)
     df = add_total_trip_duration(df, "pickup_datetime", "dropoff_datetime")
     df = add_total_taxes(df, "fare_amount", "total_amount")
     df = add_hour_bucket(df, "pickup_datetime")

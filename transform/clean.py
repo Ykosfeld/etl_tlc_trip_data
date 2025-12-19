@@ -3,6 +3,8 @@ from pyspark.sql.types import *
 from pyspark.sql.functions import *
 import logging
 
+import config.schemas as schemas
+
 logger = logging.getLogger(__name__)
 
 def coalesce_timestamp(df: DataFrame, output_col: str, yellow_cab_col: str, green_cab_col: str) -> DataFrame:
@@ -59,6 +61,15 @@ def replace_null_with_value(df: DataFrame, column: str, correct_value: int | flo
         .otherwise(col(column))
     )
 
+def rename_timestamp_column(
+    df: DataFrame, 
+    possible_names: list[str], 
+    final_name: str
+) -> DataFrame:
+    for col in possible_names:
+        if col in df.columns:
+            return df.withColumnRenamed(col, final_name)
+    return df
 
 def final_clean(df: DataFrame) -> DataFrame:
     """Limpa o DataFrame Spark desejado realizando as seguintes ações na ordem:
@@ -73,16 +84,16 @@ def final_clean(df: DataFrame) -> DataFrame:
     Returns:
         DataFrame: Novo DataFrame Spark limpo
     """
+    
+    clean_df = rename_timestamp_column(df, ["tpep_pickup_datetime", "lpep_pickup_datetime"], "pickup_datetime")
+    clean_df = rename_timestamp_column(clean_df, ["tpep_dropoff_datetime", "lpep_dropoff_datetime"], "dropoff_datetime")
 
-    time_clean_df = coalesce_timestamp(df, "pickup_datetime", "tpep_pickup_datetime", "lpep_pickup_datetime")
-    time_clean_df = coalesce_timestamp(time_clean_df, "dropoff_datetime", "tpep_dropoff_datetime", "lpep_dropoff_datetime")
-
-    clean_df = replace_value_with_null(time_clean_df, "payment_type", 5)
+    clean_df = replace_value_with_null(clean_df, "payment_type", 5)
     clean_df = replace_value_with_null(clean_df, "RatecodeID", 99)
 
-    clean_df = replace_null_with_value(clean_df, "Airport_fee", 0.0)
-    clean_df = replace_null_with_value(clean_df, "congestion_surcharge", 0.0)
-
-    clean_df = clean_df.drop("ehail_fee", "trip_type")
+    if "Airport_fee" in clean_df.columns:
+        clean_df = replace_null_with_value(clean_df, "Airport_fee", 0.0)
+    if "congestion_surcharge" in clean_df.columns:
+        clean_df = replace_null_with_value(clean_df, "congestion_surcharge", 0.0)
 
     return clean_df
