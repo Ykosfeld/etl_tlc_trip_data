@@ -7,24 +7,6 @@ import config.schemas as schemas
 
 logger = logging.getLogger(__name__)
 
-def coalesce_timestamp(df: DataFrame, output_col: str, yellow_cab_col: str, green_cab_col: str) -> DataFrame:
-    """Função que agrega as entradas de timestamp que estão em duas colunas diferentes
-     em uma coluna nova e remove as duas colunas redundates originais
-
-    Args:
-        df (DataFrame): DataFrame Spark alvo
-        output_col (str): Nome da nova coluna agregadora
-        yellow_cab_col (str): Nome da coluna que possue as entradas de timestamp vindo dos dados de taxis amarelos
-        green_cab_col (str): Nome da coluna que possue as entradas de timestamp vindo dos dados de taxis verdes
-
-    Returns:
-        DataFrame: Novo DataFrame com a nova coluna e sem as duas colunas redundantes
-    """
-    return df.withColumn(
-        output_col, 
-        coalesce(col(yellow_cab_col), col(green_cab_col))
-    ).drop(yellow_cab_col, green_cab_col)
-
 def replace_value_with_null(df: DataFrame, column: str, invalid_value: int) -> DataFrame:
     """Função que substitui as entradas de um valor indesejado para Null em uma coluna desejada
 
